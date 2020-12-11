@@ -11,6 +11,7 @@ let db = new sqlite3.Database('./src/db/taskit.db', (err) => {
   if (err) {
     return console.log(err.message);
   }
+  console.log('Connected to the taskit database.');
 });
 
 /**
