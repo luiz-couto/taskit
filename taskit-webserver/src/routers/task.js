@@ -32,8 +32,11 @@ router.get('/tasks', async (req, res) => {
 
 });
 
+
 /**
  * Create a task
+ * @param title = task title
+ * @param description = task description
  */
 router.post('/tasks', async (req, res) => {
 
@@ -54,5 +57,31 @@ router.post('/tasks', async (req, res) => {
 
   db.close();
 });
+
+
+/**
+ * Remove task by id
+ * @param id = task id to be removed
+ */
+router.delete('/tasks/:id', async (req, res) => {
+  const id = req.params.id;
+  if (!id) {
+    res.status(400).send('Need to specify task id');
+  }
+
+  let sql = `DELETE FROM tasks WHERE rowid = ${id}`;
+  let db = openDatabase();
+
+  db.run(sql, (err) => {
+    if (err) {
+      console.log(err.message);
+      res.status(500).send('An error has occured');
+    }
+    res.status(200).send('Deleted row in table');
+  });
+
+  db.close();
+
+})
 
 module.exports = router;
