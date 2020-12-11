@@ -17,7 +17,7 @@ const openDatabase = () => {
  * Get a list of all tasks (used for debug only)
  */
 router.get('/tasks', async (req, res) => {
-  let sql = `SELECT * FROM tasks`;
+  let sql = `SELECT rowid, * FROM tasks`;
 
   let db = openDatabase();
   
@@ -25,13 +25,7 @@ router.get('/tasks', async (req, res) => {
     if (err) {
       throw err;
     }
-    rows.forEach((row) => {
-      console.log(row.title);
-      console.log(row.description);
-    });
-
-    res.status(200).send('OK!');
-    
+    res.status(200).send(rows);
   });
 
   db.close();
