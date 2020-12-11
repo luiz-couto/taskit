@@ -35,8 +35,8 @@ router.get('/tasks', async (req, res) => {
 
 /**
  * Create a task
- * @param title = task title
- * @param description = task description
+ * @param title task title
+ * @param description task description
  */
 router.post('/tasks', async (req, res) => {
 
@@ -61,7 +61,7 @@ router.post('/tasks', async (req, res) => {
 
 /**
  * Remove task by id
- * @param id = task id to be removed
+ * @param id task id to be removed
  */
 router.delete('/tasks/:id', async (req, res) => {
   const id = req.params.id;
@@ -78,6 +78,33 @@ router.delete('/tasks/:id', async (req, res) => {
       res.status(500).send('An error has occured');
     }
     res.status(200).send('Deleted row in table');
+  });
+
+  db.close();
+
+});
+
+/**
+ * Update task
+ * @param id task id to be updated
+ * @param property property to be updated
+ * @param value new value of property
+ */
+router.patch('/tasks/:id', async (req, res) => {
+  const id = req.params.id;
+  if (!id) {
+    res.status(400).send('Need to specify task id');
+  }
+
+  let sql = `UPDATE tasks SET "${req.body.property}" = "${req.body.value}" WHERE rowid = ${id}`;
+  let db = openDatabase();
+
+  db.run(sql, (err) => {
+    if (err) {
+      console.log(err.message);
+      res.status(500).send('An error has occured');
+    }
+    res.status(200).send('Updated row in table');
   });
 
   db.close();
