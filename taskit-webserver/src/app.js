@@ -3,6 +3,7 @@
  */
 
 const express = require('express');
+require('./db/sqlite');
 
 const app = express();
 
