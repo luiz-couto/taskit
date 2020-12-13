@@ -19,14 +19,15 @@ var setCmd = &cobra.Command{
 	Use:   "set [taskID] [property] [new_value]",
 	Short: "Update a task title/description",
 	Long: `
-Set new value for a task property
-	
-set [taskID] [property] [new_value]
-	
-where property being one of:
-	- title
-	- description
-
+	Set new value for a task property
+		
+	set [taskID] [property] [new_value]
+		
+	where property being one of:
+		- title
+		- description
+		- status
+		- priority
 `,
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 3 {
