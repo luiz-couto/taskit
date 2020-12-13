@@ -16,6 +16,7 @@ type Task struct {
 	Rowid       int    `json:"rowid"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
+	Status      string `json:"status"`
 }
 
 // boardCmd represents the board command
@@ -93,6 +94,7 @@ func getColumnString(columnName string, tasksArray []Task) string {
 		columnString = columnString + "ID: " + strconv.Itoa(v.Rowid) + "\n"
 		columnString = columnString + "Title: " + v.Title + "\n"
 		columnString = columnString + "Description: " + v.Description + "\n"
+		columnString = columnString + "Status: " + v.Status + "\n"
 		columnString = columnString + "---------------------------\n"
 	}
 	return columnString

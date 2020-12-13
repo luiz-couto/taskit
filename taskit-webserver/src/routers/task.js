@@ -44,10 +44,10 @@ router.post('/tasks', async (req, res) => {
     res.status(400).send('Title cant be empty!');
   }
   
-  let sql = `INSERT INTO tasks(title, description) VALUES(?, ?)`;
+  let sql = `INSERT INTO tasks(title, description, status) VALUES(?, ?, ?)`;
   let db = openDatabase();
 
-  db.run(sql, [req.body.title, req.body.description], (err) => {
+  db.run(sql, [req.body.title, req.body.description, req.body.status], (err) => {
     if (err) {
       console.log(err.message);
       res.status(500).send('An error has occured');

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -48,6 +49,11 @@ func updateTaskValue(id, property, value string) {
 	})
 	if err != nil {
 		log.Fatalln(err)
+	}
+
+	if property == "status" && value != "ToDo" && value != "Working" && value != "Completed" {
+		fmt.Println("status should be one of: ToDo or Working or Completed")
+		os.Exit(0)
 	}
 
 	client := &http.Client{

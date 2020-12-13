@@ -22,6 +22,7 @@ var createCmd = &cobra.Command{
 
 		var title string
 		var description string
+		var status string
 
 		for {
 			if t, checkIfItsOk := readTitle(); checkIfItsOk {
@@ -37,7 +38,14 @@ var createCmd = &cobra.Command{
 			}
 		}
 
-		endTaskCreation(title, description)
+		for {
+			if s, checkIfItsOk := readStatus(); checkIfItsOk {
+				status = s
+				break
+			}
+		}
+
+		endTaskCreation(title, description, status)
 	},
 }
 
@@ -69,10 +77,26 @@ func readDescription() (string, bool) {
 
 }
 
-func endTaskCreation(title string, description string) {
+func readStatus() (string, bool) {
+	reader := bufio.NewReader(os.Stdin)
+
+	fmt.Printf("> Initial Status (ToDo or Working): ")
+	text, _ := reader.ReadString('\n')
+	text = strings.Replace(text, "\n", "", -1)
+
+	if text != "ToDo" && text != "Working" {
+		return "", false
+	}
+
+	return text, true
+
+}
+
+func endTaskCreation(title string, description string, status string) {
 	requestBody, err := json.Marshal(map[string]string{
 		"title":       title,
 		"description": description,
+		"status":      status,
 	})
 	if err != nil {
 		log.Fatalln(err)

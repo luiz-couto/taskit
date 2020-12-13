@@ -17,7 +17,7 @@ let db = new sqlite3.Database('./src/db/taskit.db', (err) => {
 /**
  * Create table if don't exists
  */
-db.run('CREATE TABLE IF NOT EXISTS tasks (title TEXT NOT NULL, description TEXT)', (err) => {
+db.run('CREATE TABLE IF NOT EXISTS tasks (title TEXT NOT NULL, description TEXT, status TEXT NOT NULL)', (err) => {
   if (err) {
     return console.log(err.message);
   }
