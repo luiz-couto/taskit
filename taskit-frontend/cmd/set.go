@@ -72,6 +72,14 @@ func updateTaskValue(id, property, value string) {
 		}
 	}
 
+	if property == "status" && value == "Done" {
+		task := getTaskByID(id)
+		if task.Blocked != -1 {
+			fmt.Println("Blocked tasks cant be passed to Done!")
+			os.Exit(0)
+		}
+	}
+
 	client := &http.Client{
 		Timeout: time.Duration(5 * time.Second),
 	}
@@ -87,6 +95,16 @@ func updateTaskValue(id, property, value string) {
 	}
 
 	defer resp.Body.Close()
+
+	if property == "status" && value == "Done" {
+		taskList := getAllTasks(-1)
+		for _, t := range taskList {
+			if strconv.Itoa(t.Blocked) == id {
+				unblockTask(strconv.Itoa(t.Rowid))
+				fmt.Println("Task " + strconv.Itoa(t.Rowid) + " is now unblocked!")
+			}
+		}
+	}
 
 	fmt.Println("Task updated successfully!")
 
