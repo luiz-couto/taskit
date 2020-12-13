@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/rivo/tview"
@@ -29,7 +30,8 @@ var boardCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		pFlag, _ := cmd.Flags().GetInt("priority")
-		tasksArr := getAllTasks(pFlag)
+		dFlag, _ := cmd.Flags().GetString("deadline")
+		tasksArr := getAllTasks(pFlag, dFlag)
 		drawBoard(tasksArr)
 	},
 }
@@ -37,10 +39,11 @@ var boardCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(boardCmd)
 	boardCmd.Flags().IntP("priority", "p", -1, "Filter tasks by priority")
+	boardCmd.Flags().StringP("deadline", "d", "", "Filter tasks by deadline")
 }
 
 // Get all tasks from localhost webserver
-func getAllTasks(pFlag int) []Task {
+func getAllTasks(pFlag int, dFlag string) []Task {
 	resp, err := http.Get("http://localhost:8080/tasks")
 	if err != nil {
 		fmt.Println(err)
@@ -61,6 +64,22 @@ func getAllTasks(pFlag int) []Task {
 			}
 		}
 		return filteredArr
+	}
+
+	if dFlag != "" {
+		if !verifyIfDateIsValid(dFlag) {
+			fmt.Println("Date is not valid! Valid date is in format YYYY-MM-DD")
+			os.Exit(0)
+		} else {
+
+			var filteredArr []Task
+			for _, v := range tasksArray {
+				if v.Deadline == dFlag {
+					filteredArr = append(filteredArr, v)
+				}
+			}
+			return filteredArr
+		}
 	}
 
 	return tasksArray

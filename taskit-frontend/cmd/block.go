@@ -35,7 +35,7 @@ var blockCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		taskList := getAllTasks(-1)
+		taskList := getAllTasks(-1, "")
 		if !verifyIfTaskExists(args[0], taskList) {
 			fmt.Println("Task not found!")
 			os.Exit(0)

@@ -84,7 +84,7 @@ func updateTaskValue(id, property, value string) {
 	if property == "deadline" {
 		if value != "no-deadline" {
 			if !verifyIfDateIsValid(value) {
-				fmt.Println("Date not valid! Valid date is in format YYYY-MM-DD")
+				fmt.Println("Date is not valid! Valid date is in format YYYY-MM-DD")
 				fmt.Println(`If you want to remove a deadline, just set it equal to "no-deadline"`)
 				os.Exit(0)
 			}
@@ -117,7 +117,7 @@ func updateTaskValue(id, property, value string) {
 	defer resp.Body.Close()
 
 	if property == "status" && value == "Done" {
-		taskList := getAllTasks(-1)
+		taskList := getAllTasks(-1, "")
 		for _, t := range taskList {
 			if strconv.Itoa(t.Blocked) == id {
 				unblockTask(strconv.Itoa(t.Rowid))
