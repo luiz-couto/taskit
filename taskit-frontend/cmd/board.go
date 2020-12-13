@@ -68,7 +68,7 @@ func drawBoard(tasksArray []Task) {
 			workingArr = append(workingArr, v)
 		case "Done":
 			doneArr = append(doneArr, v)
-		case "Close":
+		case "Closed(Completed)", "Closed(Non-Completed)":
 			closeArr = append(closeArr, v)
 		}
 	}
@@ -87,7 +87,7 @@ func drawBoard(tasksArray []Task) {
 	menu := newPrimitive(getColumnString("TO DO", toDoArr))
 	main := newPrimitive(getColumnString("WORKING", workingArr))
 	sideBar := newPrimitive(getColumnString("DONE", doneArr))
-	completed := newPrimitive(getColumnString("CLOSE", closeArr))
+	completed := newPrimitive(getColumnString("CLOSED", closeArr))
 
 	grid := tview.NewGrid().
 		SetRows(1, 0).
@@ -113,7 +113,9 @@ func getColumnString(columnName string, tasksArray []Task) string {
 		columnString = columnString + "ID: " + strconv.Itoa(v.Rowid) + "\n"
 		columnString = columnString + "Title: " + v.Title + "\n"
 		columnString = columnString + "Description: " + v.Description + "\n"
-		columnString = columnString + "Status: " + v.Status + "\n"
+		if columnName == "CLOSED" {
+			columnString = columnString + "Status: " + v.Status + "\n"
+		}
 		columnString = columnString + "---------------------------\n"
 	}
 	return columnString

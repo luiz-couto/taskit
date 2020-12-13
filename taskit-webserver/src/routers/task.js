@@ -14,7 +14,7 @@ const openDatabase = () => {
 }
 
 /**
- * Get a list of all tasks (used for debug only)
+ * Get a list of all tasks
  */
 router.get('/tasks', async (req, res) => {
   let sql = `SELECT rowid, * FROM tasks`;
@@ -24,6 +24,31 @@ router.get('/tasks', async (req, res) => {
   db.all(sql, [], (err, rows) => {
     if (err) {
       throw err;
+    }
+    res.status(200).send(rows);
+  });
+
+  db.close();
+
+});
+
+/**
+ * Get task by id
+ * @param id task id to be fetched
+ */
+router.get('/tasks/:id', async (req, res) => {
+
+  const id = req.params.id;
+  if (!id) {
+    res.status(400).send('Need to specify task id!');
+  }
+  let sql = `SELECT rowid, * FROM tasks WHERE rowid = ${id} `;
+
+  let db = openDatabase();
+  
+  db.all(sql, [], (err, rows) => {
+    if (err) {
+      res.status(400).send(err.message);
     }
     res.status(200).send(rows);
   });
