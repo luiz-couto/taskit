@@ -52,6 +52,11 @@ func updateTaskValue(id, property, value string) {
 		log.Fatalln(err)
 	}
 
+	if property != "title" && property != "description" && property != "status" && property != "priority" {
+		fmt.Println("property of task should be one of: title / description / status / priority")
+		os.Exit(0)
+	}
+
 	if property == "status" && value != "ToDo" && value != "Working" && value != "Done" {
 		fmt.Println("status should be one of: ToDo or Working or Done")
 		os.Exit(0)
