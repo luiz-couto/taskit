@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -54,6 +55,16 @@ func updateTaskValue(id, property, value string) {
 	if property == "status" && value != "ToDo" && value != "Working" && value != "Done" {
 		fmt.Println("status should be one of: ToDo or Working or Done")
 		os.Exit(0)
+	}
+
+	if property == "priority" {
+		if _, err := strconv.Atoi(value); err != nil {
+			fmt.Println("priority should be a integer!")
+			os.Exit(0)
+		} else if v, _ := strconv.Atoi(value); v < 0 {
+			fmt.Println("priority should be positive or zero!")
+			os.Exit(0)
+		}
 	}
 
 	client := &http.Client{

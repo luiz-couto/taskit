@@ -17,7 +17,7 @@ const openDatabase = () => {
  * Get a list of all tasks
  */
 router.get('/tasks', async (req, res) => {
-  let sql = `SELECT rowid, * FROM tasks`;
+  let sql = `SELECT rowid, * FROM tasks ORDER BY priority DESC`;
 
   let db = openDatabase();
   
@@ -69,10 +69,17 @@ router.post('/tasks', async (req, res) => {
     res.status(400).send('Title cant be empty!');
   }
   
-  let sql = `INSERT INTO tasks(title, description, status) VALUES(?, ?, ?)`;
+  let sql = `INSERT INTO tasks(title, description, status, priority) VALUES(?, ?, ?, ?)`;
   let db = openDatabase();
 
-  db.run(sql, [req.body.title, req.body.description, req.body.status], (err) => {
+  let priority;
+  if (Math.sign(req.body.priority) != 1) {
+    priority = 0;
+  } else {
+    priority = req.body.priority;
+  }
+
+  db.run(sql, [req.body.title, req.body.description, req.body.status, priority], (err) => {
     if (err) {
       console.log(err.message);
       res.status(500).send('An error has occured');

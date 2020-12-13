@@ -23,6 +23,7 @@ var createCmd = &cobra.Command{
 		var title string
 		var description string
 		var status string
+		var priority string
 
 		for {
 			if t, checkIfItsOk := readTitle(); checkIfItsOk {
@@ -45,7 +46,14 @@ var createCmd = &cobra.Command{
 			}
 		}
 
-		endTaskCreation(title, description, status)
+		for {
+			if p, checkIfItsOk := readPriority(); checkIfItsOk {
+				priority = p
+				break
+			}
+		}
+
+		endTaskCreation(title, description, status, priority)
 	},
 }
 
@@ -92,11 +100,22 @@ func readStatus() (string, bool) {
 
 }
 
-func endTaskCreation(title string, description string, status string) {
+func readPriority() (string, bool) {
+	reader := bufio.NewReader(os.Stdin)
+
+	fmt.Printf("> Task Priority (default to 0): ")
+	text, _ := reader.ReadString('\n')
+	text = strings.Replace(text, "\n", "", -1)
+
+	return text, true
+}
+
+func endTaskCreation(title string, description string, status string, priority string) {
 	requestBody, err := json.Marshal(map[string]string{
 		"title":       title,
 		"description": description,
 		"status":      status,
+		"priority":    priority,
 	})
 	if err != nil {
 		log.Fatalln(err)
