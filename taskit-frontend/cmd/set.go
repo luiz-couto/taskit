@@ -53,8 +53,8 @@ func updateTaskValue(id, property, value string) {
 		log.Fatalln(err)
 	}
 
-	if property != "title" && property != "description" && property != "status" && property != "priority" {
-		fmt.Println("property of task should be one of: title / description / status / priority")
+	if property != "title" && property != "description" && property != "status" && property != "priority" && property != "deadline" {
+		fmt.Println("property of task should be one of: title / description / status / priority / deadline")
 		os.Exit(0)
 	}
 
@@ -79,6 +79,25 @@ func updateTaskValue(id, property, value string) {
 			fmt.Println("Blocked tasks cant be passed to Done!")
 			os.Exit(0)
 		}
+	}
+
+	if property == "deadline" {
+		if value != "no-deadline" {
+			if !verifyIfDateIsValid(value) {
+				fmt.Println("Date not valid! Valid date is in format YYYY-MM-DD")
+				fmt.Println(`If you want to remove a deadline, just set it equal to "no-deadline"`)
+				os.Exit(0)
+			}
+		} else {
+			requestBody, _ = json.Marshal(map[string]string{
+				"property": property,
+				"value":    "",
+			})
+			if err != nil {
+				log.Fatalln(err)
+			}
+		}
+
 	}
 
 	client := &http.Client{

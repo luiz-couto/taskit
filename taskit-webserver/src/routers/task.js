@@ -69,7 +69,7 @@ router.post('/tasks', async (req, res) => {
     res.status(400).send('Title cant be empty!');
   }
   
-  let sql = `INSERT INTO tasks(title, description, status, priority, blocked) VALUES(?, ?, ?, ?, ?)`;
+  let sql = `INSERT INTO tasks(title, description, status, priority, blocked, deadline) VALUES(?, ?, ?, ?, ?, ?)`;
   let db = openDatabase();
 
   let priority;
@@ -79,7 +79,7 @@ router.post('/tasks', async (req, res) => {
     priority = req.body.priority;
   }
 
-  db.run(sql, [req.body.title, req.body.description, req.body.status, priority, -1], (err) => {
+  db.run(sql, [req.body.title, req.body.description, req.body.status, priority, -1, req.body.deadline], (err) => {
     if (err) {
       console.log(err.message);
       res.status(500).send('An error has occured');

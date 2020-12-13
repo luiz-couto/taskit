@@ -19,6 +19,7 @@ type Task struct {
 	Status      string `json:"status"`
 	Priority    int    `json:"priority"`
 	Blocked     int    `json:"blocked"`
+	Deadline    string `json:"deadline"`
 }
 
 // boardCmd represents the board command
@@ -128,6 +129,10 @@ func getColumnString(columnName string, tasksArray []Task) string {
 		columnString = columnString + "Title: " + v.Title + "\n"
 		columnString = columnString + "Description: " + v.Description + "\n"
 		columnString = columnString + "Priority: " + strconv.Itoa(v.Priority) + "\n"
+
+		if v.Deadline != "" {
+			columnString = columnString + "Deadline: " + v.Deadline + "\n"
+		}
 
 		if v.Blocked != -1 {
 			if v.Blocked == 0 {

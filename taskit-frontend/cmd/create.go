@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -24,6 +25,7 @@ var createCmd = &cobra.Command{
 		var description string
 		var status string
 		var priority string
+		var deadline string
 
 		for {
 			if t, checkIfItsOk := readTitle(); checkIfItsOk {
@@ -53,7 +55,14 @@ var createCmd = &cobra.Command{
 			}
 		}
 
-		endTaskCreation(title, description, status, priority)
+		for {
+			if dl, checkIfItsOk := readDeadline(); checkIfItsOk {
+				deadline = dl
+				break
+			}
+		}
+
+		endTaskCreation(title, description, status, priority, deadline)
 	},
 }
 
@@ -110,12 +119,39 @@ func readPriority() (string, bool) {
 	return text, true
 }
 
-func endTaskCreation(title string, description string, status string, priority string) {
+func readDeadline() (string, bool) {
+	reader := bufio.NewReader(os.Stdin)
+
+	fmt.Printf("> Task Deadline (YYYY-MM-DD - default to no-deadline): ")
+	text, _ := reader.ReadString('\n')
+	text = strings.Replace(text, "\n", "", -1)
+
+	if !verifyIfDateIsValid(text) {
+		return "", false
+	}
+
+	return text, true
+}
+
+func verifyIfDateIsValid(date string) bool {
+	if date == "" {
+		return true
+	}
+	const layoutISO = "2006-01-02"
+	_, err := time.Parse(layoutISO, date)
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func endTaskCreation(title string, description string, status string, priority string, deadline string) {
 	requestBody, err := json.Marshal(map[string]string{
 		"title":       title,
 		"description": description,
 		"status":      status,
 		"priority":    priority,
+		"deadline":    deadline,
 	})
 	if err != nil {
 		log.Fatalln(err)
