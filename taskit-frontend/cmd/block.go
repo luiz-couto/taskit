@@ -40,6 +40,10 @@ var blockCmd = &cobra.Command{
 			fmt.Println("Task not found!")
 			os.Exit(0)
 		}
+		if !verifyIsTaskIsValid(args[0]) {
+			fmt.Println("Task must be with status ToDo or Working to be blocked!")
+			os.Exit(0)
+		}
 
 	OuterLoop:
 		for {
@@ -51,6 +55,11 @@ var blockCmd = &cobra.Command{
 						if !verifyIfTaskExists(otherTaskID, taskList) {
 							fmt.Println("Task not found!")
 							break
+						}
+
+						if !verifyIsTaskIsValid(otherTaskID) {
+							fmt.Println("Task must be with status ToDo or Working to block other tasks!")
+							os.Exit(0)
 						}
 
 						value, _ := strconv.Atoi(args[0])
@@ -88,6 +97,14 @@ func verifyIfTaskExists(taskID string, taskList []Task) bool {
 		}
 	}
 	return found
+}
+
+func verifyIsTaskIsValid(taskID string) bool {
+	task := getTaskByID(taskID)
+	if task.Status != "ToDo" && task.Status != "Working" {
+		return false
+	}
+	return true
 }
 
 func readTaskDependency() (int, bool) {
