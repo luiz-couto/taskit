@@ -26,17 +26,19 @@ var boardCmd = &cobra.Command{
 	Short: "List all the tasks",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		tasksArr := getAllTasks()
+		pFlag, _ := cmd.Flags().GetInt("priority")
+		tasksArr := getAllTasks(pFlag)
 		drawBoard(tasksArr)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(boardCmd)
+	boardCmd.Flags().IntP("priority", "p", -1, "Filter tasks by priority")
 }
 
 // Get all tasks from localhost webserver
-func getAllTasks() []Task {
+func getAllTasks(pFlag int) []Task {
 	resp, err := http.Get("http://localhost:8080/tasks")
 	if err != nil {
 		fmt.Println(err)
@@ -47,6 +49,16 @@ func getAllTasks() []Task {
 	e := json.NewDecoder(resp.Body).Decode(&tasksArray)
 	if e != nil {
 		fmt.Println(e)
+	}
+
+	if pFlag >= 0 {
+		var filteredArr []Task
+		for _, v := range tasksArray {
+			if v.Priority == pFlag {
+				filteredArr = append(filteredArr, v)
+			}
+		}
+		return filteredArr
 	}
 
 	return tasksArray
