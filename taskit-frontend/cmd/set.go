@@ -51,8 +51,8 @@ func updateTaskValue(id, property, value string) {
 		log.Fatalln(err)
 	}
 
-	if property == "status" && value != "ToDo" && value != "Working" && value != "Completed" {
-		fmt.Println("status should be one of: ToDo or Working or Completed")
+	if property == "status" && value != "ToDo" && value != "Working" && value != "Done" {
+		fmt.Println("status should be one of: ToDo or Working or Done")
 		os.Exit(0)
 	}
 

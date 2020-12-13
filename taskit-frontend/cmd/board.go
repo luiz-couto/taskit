@@ -54,6 +54,25 @@ func getAllTasks() []Task {
 
 // Draw the board with all the columns
 func drawBoard(tasksArray []Task) {
+
+	var toDoArr []Task
+	var workingArr []Task
+	var doneArr []Task
+	var closeArr []Task
+
+	for _, v := range tasksArray {
+		switch v.Status {
+		case "ToDo":
+			toDoArr = append(toDoArr, v)
+		case "Working":
+			workingArr = append(workingArr, v)
+		case "Done":
+			doneArr = append(doneArr, v)
+		case "Close":
+			closeArr = append(closeArr, v)
+		}
+	}
+
 	newTitle := func(text string) tview.Primitive {
 		return tview.NewTextView().
 			SetTextAlign(tview.AlignCenter).
@@ -65,10 +84,10 @@ func drawBoard(tasksArray []Task) {
 			SetTextAlign(tview.AlignLeft).
 			SetText(text)
 	}
-	menu := newPrimitive(getColumnString("TO DO", tasksArray))
-	main := newPrimitive(getColumnString("WORKING", tasksArray))
-	sideBar := newPrimitive(getColumnString("COMPLETED", tasksArray))
-	completed := newPrimitive(getColumnString("CLOSE", tasksArray))
+	menu := newPrimitive(getColumnString("TO DO", toDoArr))
+	main := newPrimitive(getColumnString("WORKING", workingArr))
+	sideBar := newPrimitive(getColumnString("DONE", doneArr))
+	completed := newPrimitive(getColumnString("CLOSE", closeArr))
 
 	grid := tview.NewGrid().
 		SetRows(1, 0).
