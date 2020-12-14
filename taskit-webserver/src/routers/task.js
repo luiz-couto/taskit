@@ -6,10 +6,18 @@ const express = require('express');
 const router = new express.Router();
 
 /**
+ * Get node param for local sql or docker sql
+ */
+let url = '/data/taskit.db'
+if (process.argv[2] && process.argv[2] == 'local') {
+  url = './src/db/taskit.db'
+}
+
+/**
  * Open database and return it
  */
 const openDatabase = () => {
-  let db = new sqlite3.Database('./src/db/taskit.db');
+  let db = new sqlite3.Database(url);
   return db;
 }
 

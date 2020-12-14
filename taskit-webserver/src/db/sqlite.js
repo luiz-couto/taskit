@@ -1,4 +1,12 @@
 /**
+ * Get node param for local sql or docker sql
+ */
+let url = '/data/taskit.db'
+if (process.argv[2] && process.argv[2] == 'local') {
+  url = './src/db/taskit.db'
+}
+
+/**
  * Init sqlite db
  */
 
@@ -7,7 +15,7 @@ const sqlite3 = require('sqlite3').verbose();
 /**
  * Create database if don't exists
  */
-let db = new sqlite3.Database('./src/db/taskit.db', (err) => {
+let db = new sqlite3.Database(url, (err) => {
   if (err) {
     return console.log(err.message);
   }

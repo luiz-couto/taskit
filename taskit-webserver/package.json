@@ -4,7 +4,8 @@
   "description": "Task manager using CLI (command line program) as frontend.",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "dev": "node src/index.js local"
   },
   "author": "",
   "license": "ISC",
