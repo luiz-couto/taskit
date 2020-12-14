@@ -126,6 +126,36 @@ func updateTaskValue(id, property, value string) {
 		}
 	}
 
+	if property == "status" && value == "Working" {
+		setWorkingEnter(id)
+	}
+
 	fmt.Println("Task updated successfully!")
+
+}
+
+func setWorkingEnter(id string) {
+
+	now := time.Now()
+	requestBody, err := json.Marshal(map[string]string{
+		"property": "workingEnter",
+		"value":    now.Format("2006-01-02T15:04:05-0700"),
+	})
+
+	client := &http.Client{
+		Timeout: time.Duration(5 * time.Second),
+	}
+	request, err := http.NewRequest(http.MethodPatch, "http://localhost:8080/tasks/"+id, bytes.NewBuffer(requestBody))
+	request.Header.Set("Content-Type", "application/json")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	resp, err := client.Do(request)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	defer resp.Body.Close()
 
 }
