@@ -13,7 +13,7 @@ import (
 )
 
 // URL to connect to webserver
-var URL string = "http://localhost:49160"
+var URL string = "http://localhost:8080"
 
 // Task Struct
 type Task struct {
@@ -26,6 +26,7 @@ type Task struct {
 	Deadline       string `json:"deadline"`
 	WorkingEnter   string `json:"workingEnter"`
 	WorkingElapsed string `json:"workingElapsed"`
+	CreatedAt      string `json:"createdAt"`
 }
 
 // boardCmd represents the board command

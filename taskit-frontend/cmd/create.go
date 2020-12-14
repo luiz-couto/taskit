@@ -154,6 +154,9 @@ func endTaskCreation(title string, description string, status string, priority s
 		we = now.Format("2006-01-02T15:04:05-0700")
 	}
 
+	createdAt := time.Now()
+	createdAtString := createdAt.Format("2006-01-02T15:04:05-0700")
+
 	requestBody, err := json.Marshal(map[string]string{
 		"title":        title,
 		"description":  description,
@@ -161,6 +164,7 @@ func endTaskCreation(title string, description string, status string, priority s
 		"priority":     priority,
 		"deadline":     deadline,
 		"workingEnter": we,
+		"createdAt":    createdAtString,
 	})
 	if err != nil {
 		log.Fatalln(err)
