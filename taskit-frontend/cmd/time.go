@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -22,17 +23,34 @@ var timeCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		task := getTaskByID(args[0])
-		now := time.Now()
 
-		parse, err := time.Parse("2006-01-02T15:04:05-0700", task.WorkingEnter)
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(0)
+		if task.Status == "Working" {
+			now := time.Now()
+
+			parse, err := time.Parse("2006-01-02T15:04:05-0700", task.WorkingEnter)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(0)
+			}
+
+			diff := now.Sub(parse)
+
+			elapsed, _ := strconv.ParseFloat(task.WorkingElapsed, 64)
+			total := diff.Seconds() + elapsed
+
+			totalAsString := fmt.Sprintf("%f", total)
+			totalDuration, _ := time.ParseDuration(totalAsString + "s")
+
+			out := time.Time{}.Add(totalDuration)
+			fmt.Println("Time working in this task:", out.Format("15h 04m 05s"))
+		} else {
+
+			elapsed, _ := strconv.ParseFloat(task.WorkingElapsed, 64)
+			totalAsString := fmt.Sprintf("%f", elapsed)
+			totalDuration, _ := time.ParseDuration(totalAsString + "s")
+			out := time.Time{}.Add(totalDuration)
+			fmt.Println("Time working in this task:", out.Format("15h 04m 05s"))
 		}
-
-		diff := now.Sub(parse)
-		out := time.Time{}.Add(diff)
-		fmt.Println(out.Format("15h 04m 05s"))
 
 	},
 }

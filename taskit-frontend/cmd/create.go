@@ -146,12 +146,21 @@ func verifyIfDateIsValid(date string) bool {
 }
 
 func endTaskCreation(title string, description string, status string, priority string, deadline string) {
+
+	var we string = ""
+
+	if status == "Working" {
+		now := time.Now()
+		we = now.Format("2006-01-02T15:04:05-0700")
+	}
+
 	requestBody, err := json.Marshal(map[string]string{
-		"title":       title,
-		"description": description,
-		"status":      status,
-		"priority":    priority,
-		"deadline":    deadline,
+		"title":        title,
+		"description":  description,
+		"status":       status,
+		"priority":     priority,
+		"deadline":     deadline,
+		"workingEnter": we,
 	})
 	if err != nil {
 		log.Fatalln(err)

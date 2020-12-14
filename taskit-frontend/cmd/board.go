@@ -14,14 +14,15 @@ import (
 
 // Task Struct
 type Task struct {
-	Rowid        int    `json:"rowid"`
-	Title        string `json:"title"`
-	Description  string `json:"description"`
-	Status       string `json:"status"`
-	Priority     int    `json:"priority"`
-	Blocked      int    `json:"blocked"`
-	Deadline     string `json:"deadline"`
-	WorkingEnter string `json:"workingEnter"`
+	Rowid          int    `json:"rowid"`
+	Title          string `json:"title"`
+	Description    string `json:"description"`
+	Status         string `json:"status"`
+	Priority       int    `json:"priority"`
+	Blocked        int    `json:"blocked"`
+	Deadline       string `json:"deadline"`
+	WorkingEnter   string `json:"workingEnter"`
+	WorkingElapsed string `json:"workingElapsed"`
 }
 
 // boardCmd represents the board command

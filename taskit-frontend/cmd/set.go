@@ -53,6 +53,8 @@ func updateTaskValue(id, property, value string) {
 		log.Fatalln(err)
 	}
 
+	task := getTaskByID(id)
+
 	if property != "title" && property != "description" && property != "status" && property != "priority" && property != "deadline" {
 		fmt.Println("property of task should be one of: title / description / status / priority / deadline")
 		os.Exit(0)
@@ -74,7 +76,6 @@ func updateTaskValue(id, property, value string) {
 	}
 
 	if property == "status" && value == "Done" {
-		task := getTaskByID(id)
 		if task.Blocked != -1 {
 			fmt.Println("Blocked tasks cant be passed to Done!")
 			os.Exit(0)
@@ -126,7 +127,11 @@ func updateTaskValue(id, property, value string) {
 		}
 	}
 
-	if property == "status" && value == "Working" {
+	if property == "status" && task.Status == "Working" && value != "Working" {
+		setElapsedTime(id, task)
+	}
+
+	if property == "status" && value == "Working" && task.Status != "Working" {
 		setWorkingEnter(id)
 	}
 
@@ -140,6 +145,45 @@ func setWorkingEnter(id string) {
 	requestBody, err := json.Marshal(map[string]string{
 		"property": "workingEnter",
 		"value":    now.Format("2006-01-02T15:04:05-0700"),
+	})
+
+	client := &http.Client{
+		Timeout: time.Duration(5 * time.Second),
+	}
+	request, err := http.NewRequest(http.MethodPatch, "http://localhost:8080/tasks/"+id, bytes.NewBuffer(requestBody))
+	request.Header.Set("Content-Type", "application/json")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	resp, err := client.Do(request)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	defer resp.Body.Close()
+
+}
+
+func setElapsedTime(id string, task Task) {
+	now := time.Now()
+
+	parse, err := time.Parse("2006-01-02T15:04:05-0700", task.WorkingEnter)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(0)
+	}
+
+	diff := now.Sub(parse)
+
+	elapsed, _ := strconv.ParseFloat(task.WorkingElapsed, 64)
+	total := diff.Seconds() + elapsed
+
+	totalAsString := fmt.Sprintf("%f", total)
+
+	requestBody, err := json.Marshal(map[string]string{
+		"property": "workingElapsed",
+		"value":    totalAsString,
 	})
 
 	client := &http.Client{
