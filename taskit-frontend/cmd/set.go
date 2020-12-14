@@ -118,7 +118,7 @@ func updateTaskValue(id, property, value string) {
 	defer resp.Body.Close()
 
 	if property == "status" && value == "Done" {
-		taskList := getAllTasks(-1, "")
+		taskList := getAllTasks(-1, "", "")
 		for _, t := range taskList {
 			if strconv.Itoa(t.Blocked) == id {
 				unblockTask(strconv.Itoa(t.Rowid))

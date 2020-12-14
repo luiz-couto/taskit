@@ -37,7 +37,8 @@ var boardCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		pFlag, _ := cmd.Flags().GetInt("priority")
 		dFlag, _ := cmd.Flags().GetString("deadline")
-		tasksArr := getAllTasks(pFlag, dFlag)
+		cFlag, _ := cmd.Flags().GetString("createdAt")
+		tasksArr := getAllTasks(pFlag, dFlag, cFlag)
 		drawBoard(tasksArr)
 	},
 }
@@ -46,10 +47,11 @@ func init() {
 	rootCmd.AddCommand(boardCmd)
 	boardCmd.Flags().IntP("priority", "p", -1, "Filter tasks by priority")
 	boardCmd.Flags().StringP("deadline", "d", "", "Filter tasks by deadline")
+	boardCmd.Flags().StringP("createdAt", "c", "", "Filter tasks by created day (added time)")
 }
 
 // Get all tasks from localhost webserver
-func getAllTasks(pFlag int, dFlag string) []Task {
+func getAllTasks(pFlag int, dFlag string, cFlag string) []Task {
 	resp, err := http.Get(URL + "/tasks")
 	if err != nil {
 		fmt.Println(err)
@@ -88,8 +90,23 @@ func getAllTasks(pFlag int, dFlag string) []Task {
 		}
 	}
 
-	return tasksArray
+	if cFlag != "" {
+		if !verifyIfDateIsValid(cFlag) {
+			fmt.Println("Date is not valid! Valid date is in format YYYY-MM-DD")
+			os.Exit(0)
+		} else {
 
+			var filteredArr []Task
+			for _, v := range tasksArray {
+				if v.CreatedAt[0:10] == cFlag {
+					filteredArr = append(filteredArr, v)
+				}
+			}
+			return filteredArr
+		}
+	}
+
+	return tasksArray
 }
 
 // Draw the board with all the columns
