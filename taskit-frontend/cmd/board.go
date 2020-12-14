@@ -12,6 +12,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// URL to connect to webserver
+var URL string = "http://localhost:49160"
+
 // Task Struct
 type Task struct {
 	Rowid          int    `json:"rowid"`
@@ -46,7 +49,7 @@ func init() {
 
 // Get all tasks from localhost webserver
 func getAllTasks(pFlag int, dFlag string) []Task {
-	resp, err := http.Get("http://localhost:8080/tasks")
+	resp, err := http.Get(URL + "/tasks")
 	if err != nil {
 		fmt.Println(err)
 	}

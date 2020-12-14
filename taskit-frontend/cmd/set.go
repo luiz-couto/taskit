@@ -104,7 +104,7 @@ func updateTaskValue(id, property, value string) {
 	client := &http.Client{
 		Timeout: time.Duration(5 * time.Second),
 	}
-	request, err := http.NewRequest(http.MethodPatch, "http://localhost:8080/tasks/"+id, bytes.NewBuffer(requestBody))
+	request, err := http.NewRequest(http.MethodPatch, URL+"/tasks/"+id, bytes.NewBuffer(requestBody))
 	request.Header.Set("Content-Type", "application/json")
 	if err != nil {
 		log.Fatalln(err)
@@ -150,7 +150,7 @@ func setWorkingEnter(id string) {
 	client := &http.Client{
 		Timeout: time.Duration(5 * time.Second),
 	}
-	request, err := http.NewRequest(http.MethodPatch, "http://localhost:8080/tasks/"+id, bytes.NewBuffer(requestBody))
+	request, err := http.NewRequest(http.MethodPatch, URL+"/tasks/"+id, bytes.NewBuffer(requestBody))
 	request.Header.Set("Content-Type", "application/json")
 	if err != nil {
 		log.Fatalln(err)
@@ -189,7 +189,7 @@ func setElapsedTime(id string, task Task) {
 	client := &http.Client{
 		Timeout: time.Duration(5 * time.Second),
 	}
-	request, err := http.NewRequest(http.MethodPatch, "http://localhost:8080/tasks/"+id, bytes.NewBuffer(requestBody))
+	request, err := http.NewRequest(http.MethodPatch, URL+"/tasks/"+id, bytes.NewBuffer(requestBody))
 	request.Header.Set("Content-Type", "application/json")
 	if err != nil {
 		log.Fatalln(err)

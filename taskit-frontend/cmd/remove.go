@@ -55,7 +55,7 @@ func removeTask(taskID string) {
 	client := &http.Client{
 		Timeout: time.Duration(5 * time.Second),
 	}
-	request, err := http.NewRequest(http.MethodPatch, "http://localhost:8080/tasks/"+taskID, bytes.NewBuffer(requestBody))
+	request, err := http.NewRequest(http.MethodPatch, URL+"/tasks/"+taskID, bytes.NewBuffer(requestBody))
 	request.Header.Set("Content-Type", "application/json")
 	if err != nil {
 		log.Fatalln(err)
@@ -73,7 +73,7 @@ func removeTask(taskID string) {
 
 // Get task from localhost webserver
 func getTaskByID(taskID string) Task {
-	resp, err := http.Get("http://localhost:8080/tasks/" + taskID)
+	resp, err := http.Get(URL + "/tasks/" + taskID)
 	if err != nil {
 		fmt.Println(err)
 	}

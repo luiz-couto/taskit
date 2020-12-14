@@ -146,7 +146,7 @@ func updateBlockedValue(taskID int, otherTaskID int) {
 	client := &http.Client{
 		Timeout: time.Duration(5 * time.Second),
 	}
-	request, err := http.NewRequest(http.MethodPatch, "http://localhost:8080/tasks/"+strconv.Itoa(taskID), bytes.NewBuffer(requestBody))
+	request, err := http.NewRequest(http.MethodPatch, URL+"/tasks/"+strconv.Itoa(taskID), bytes.NewBuffer(requestBody))
 	request.Header.Set("Content-Type", "application/json")
 	if err != nil {
 		log.Fatalln(err)

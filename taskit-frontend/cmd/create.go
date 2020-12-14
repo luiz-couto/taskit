@@ -166,7 +166,7 @@ func endTaskCreation(title string, description string, status string, priority s
 		log.Fatalln(err)
 	}
 
-	resp, err := http.Post("http://localhost:8080/tasks", "application/json", bytes.NewBuffer(requestBody))
+	resp, err := http.Post(URL+"/tasks", "application/json", bytes.NewBuffer(requestBody))
 	if err != nil {
 		log.Fatalln(err)
 	}
