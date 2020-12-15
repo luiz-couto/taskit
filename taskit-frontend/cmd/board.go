@@ -28,6 +28,7 @@ type Task struct {
 	WorkingEnter   string `json:"workingEnter"`
 	WorkingElapsed string `json:"workingElapsed"`
 	CreatedAt      string `json:"createdAt"`
+	TimeEstimate   string `json:"timeEstimate"`
 }
 
 // boardCmd represents the board command
@@ -194,6 +195,10 @@ func getColumnString(columnName string, tasksArray []Task) string {
 
 		if v.Deadline != "" {
 			columnString = columnString + "Deadline: " + v.Deadline + "\n"
+		}
+
+		if v.TimeEstimate != "" {
+			columnString = columnString + "Time Estimate: " + v.TimeEstimate + " hrs\n"
 		}
 
 		if v.Blocked != -1 {

@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -26,6 +27,7 @@ var createCmd = &cobra.Command{
 		var status string
 		var priority string
 		var deadline string
+		var timeEstimate string
 
 		for {
 			if t, checkIfItsOk := readTitle(); checkIfItsOk {
@@ -62,7 +64,14 @@ var createCmd = &cobra.Command{
 			}
 		}
 
-		endTaskCreation(title, description, status, priority, deadline)
+		for {
+			if te, checkIfItsOk := readTimeEstimate(); checkIfItsOk {
+				timeEstimate = te
+				break
+			}
+		}
+
+		endTaskCreation(title, description, status, priority, deadline, timeEstimate)
 	},
 }
 
@@ -133,6 +142,20 @@ func readDeadline() (string, bool) {
 	return text, true
 }
 
+func readTimeEstimate() (string, bool) {
+	reader := bufio.NewReader(os.Stdin)
+
+	fmt.Printf("> Time Estimate (In hours - Ex. 1, 1.5, 2, 2.2): ")
+	text, _ := reader.ReadString('\n')
+	text = strings.Replace(text, "\n", "", -1)
+
+	if !verifyIfFloatIsValid(text) {
+		return "", false
+	}
+
+	return text, true
+}
+
 func verifyIfDateIsValid(date string) bool {
 	if date == "" {
 		return true
@@ -145,7 +168,20 @@ func verifyIfDateIsValid(date string) bool {
 	return true
 }
 
-func endTaskCreation(title string, description string, status string, priority string, deadline string) {
+func verifyIfFloatIsValid(num string) bool {
+	if num == "" {
+		return true
+	}
+
+	_, err := strconv.ParseFloat(num, 64)
+	if err != nil {
+		return false
+	}
+	return true
+
+}
+
+func endTaskCreation(title string, description string, status string, priority string, deadline string, timeEstimate string) {
 
 	var we string = ""
 
@@ -165,6 +201,7 @@ func endTaskCreation(title string, description string, status string, priority s
 		"deadline":     deadline,
 		"workingEnter": we,
 		"createdAt":    createdAtString,
+		"timeEstimate": timeEstimate,
 	})
 	if err != nil {
 		log.Fatalln(err)

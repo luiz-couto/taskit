@@ -55,8 +55,8 @@ func updateTaskValue(id, property, value string) {
 
 	task := getTaskByID(id)
 
-	if property != "title" && property != "description" && property != "status" && property != "priority" && property != "deadline" {
-		fmt.Println("property of task should be one of: title / description / status / priority / deadline")
+	if property != "title" && property != "description" && property != "status" && property != "priority" && property != "deadline" && property != "timeEstimate" {
+		fmt.Println("property of task should be one of: title / description / status / priority / deadline / timeEstimate")
 		os.Exit(0)
 	}
 
@@ -87,6 +87,25 @@ func updateTaskValue(id, property, value string) {
 			if !verifyIfDateIsValid(value) {
 				fmt.Println("Date is not valid! Valid date is in format YYYY-MM-DD")
 				fmt.Println(`If you want to remove a deadline, just set it equal to "no-deadline"`)
+				os.Exit(0)
+			}
+		} else {
+			requestBody, _ = json.Marshal(map[string]string{
+				"property": property,
+				"value":    "",
+			})
+			if err != nil {
+				log.Fatalln(err)
+			}
+		}
+
+	}
+
+	if property == "timeEstimate" {
+		if value != "no-time-estimate" {
+			if !verifyIfFloatIsValid(value) {
+				fmt.Println("Number not valid! Time estimate must be in hours, Ex. 1, 1.5, 2, 2.2")
+				fmt.Println(`If you want to remove a time-estimate, just set it equal to "no-time-estimate"`)
 				os.Exit(0)
 			}
 		} else {
