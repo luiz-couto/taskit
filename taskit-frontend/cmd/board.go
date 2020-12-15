@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	"github.com/rivo/tview"
 
@@ -75,10 +76,19 @@ func getAllTasks(pFlag int, dFlag string, cFlag string) []Task {
 	}
 
 	if dFlag != "" {
-		if !verifyIfDateIsValid(dFlag) {
-			fmt.Println("Date is not valid! Valid date is in format YYYY-MM-DD")
+		if !verifyIfDateIsValid(dFlag) && dFlag != "today" {
+			fmt.Println(`
+			Date is not valid! Valid date is in format YYYY-MM-DD. 
+			If you want to see tasks created today, you can also pass [today]
+			`)
 			os.Exit(0)
 		} else {
+
+			if dFlag == "today" {
+				now := time.Now()
+				nowAsString := now.Format("2006-01-02T15:04:05-0700")
+				dFlag = nowAsString[0:10]
+			}
 
 			var filteredArr []Task
 			for _, v := range tasksArray {
@@ -91,10 +101,20 @@ func getAllTasks(pFlag int, dFlag string, cFlag string) []Task {
 	}
 
 	if cFlag != "" {
-		if !verifyIfDateIsValid(cFlag) {
-			fmt.Println("Date is not valid! Valid date is in format YYYY-MM-DD")
+
+		if !verifyIfDateIsValid(cFlag) && cFlag != "today" {
+			fmt.Println(`
+			Date is not valid! Valid date is in format YYYY-MM-DD. 
+			If you want to see tasks created today, you can also pass [today]
+			`)
 			os.Exit(0)
 		} else {
+
+			if cFlag == "today" {
+				now := time.Now()
+				nowAsString := now.Format("2006-01-02T15:04:05-0700")
+				cFlag = nowAsString[0:10]
+			}
 
 			var filteredArr []Task
 			for _, v := range tasksArray {
