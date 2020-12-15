@@ -95,7 +95,7 @@ func readTitle() (string, bool) {
 func readDescription() (string, bool) {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Printf("> Task Description: ")
+	fmt.Printf("> (Optional) Task Description: ")
 	text, _ := reader.ReadString('\n')
 	text = strings.Replace(text, "\n", "", -1)
 
@@ -121,7 +121,7 @@ func readStatus() (string, bool) {
 func readPriority() (string, bool) {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Printf("> Task Priority (default to 0): ")
+	fmt.Printf("> (Optional) Task Priority (default to 0): ")
 	text, _ := reader.ReadString('\n')
 	text = strings.Replace(text, "\n", "", -1)
 
@@ -131,7 +131,7 @@ func readPriority() (string, bool) {
 func readDeadline() (string, bool) {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Printf("> Task Deadline (YYYY-MM-DD - default to no-deadline): ")
+	fmt.Printf("> (Optional) Task Deadline (YYYY-MM-DD - default to no-deadline): ")
 	text, _ := reader.ReadString('\n')
 	text = strings.Replace(text, "\n", "", -1)
 
@@ -145,7 +145,7 @@ func readDeadline() (string, bool) {
 func readTimeEstimate() (string, bool) {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Printf("> Time Estimate (In hours - Ex. 1, 1.5, 2, 2.2): ")
+	fmt.Printf("> (Optional) Time Estimate (In hours - Ex. 1, 1.5, 2, 2.2): ")
 	text, _ := reader.ReadString('\n')
 	text = strings.Replace(text, "\n", "", -1)
 
