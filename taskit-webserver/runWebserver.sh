@@ -6,4 +6,4 @@ sudo docker rm taskit-webserver
 echo "Starting Webserver Docker Container...."
 sudo docker build -t taskit-webserver .
 sudo docker volume create taskit
-sudo docker run -v taskit:/data -p 49160:8080 -d --name taskit-webserver taskit-webserver
+sudo docker run -v taskit:/data -p 49160:8080 -d --restart always --name taskit-webserver taskit-webserver
