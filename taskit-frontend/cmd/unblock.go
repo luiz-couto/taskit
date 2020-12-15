@@ -15,7 +15,7 @@ import (
 
 // unblockCmd represents the unblock command
 var unblockCmd = &cobra.Command{
-	Use:   "unblock",
+	Use:   "unblock [taskID]",
 	Short: "Unblock a task",
 	Long:  ``,
 	Args: func(cmd *cobra.Command, args []string) error {

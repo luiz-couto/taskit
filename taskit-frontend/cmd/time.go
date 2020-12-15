@@ -12,7 +12,7 @@ import (
 
 // timeCmd represents the time command
 var timeCmd = &cobra.Command{
-	Use:   "time",
+	Use:   "time [taskID]",
 	Short: "See the working time spent on a task",
 	Long:  ``,
 	Args: func(cmd *cobra.Command, args []string) error {

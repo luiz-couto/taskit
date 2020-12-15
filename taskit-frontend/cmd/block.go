@@ -18,7 +18,7 @@ import (
 
 // blockCmd represents the block command
 var blockCmd = &cobra.Command{
-	Use:   "block",
+	Use:   "block [taskID]",
 	Short: "Block task",
 	Long: `
 	Using the command "block", you can block any task.

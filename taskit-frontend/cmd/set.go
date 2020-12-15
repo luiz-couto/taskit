@@ -17,7 +17,7 @@ import (
 // setCmd represents the set command
 var setCmd = &cobra.Command{
 	Use:   "set [taskID] [property] [new_value]",
-	Short: "Update a task title/description",
+	Short: "Update a task title / description / status / priority / deadline / timeEstimate",
 	Long: `
 	Set new value for a task property
 		
