@@ -14,7 +14,7 @@ import (
 )
 
 // URL to connect to webserver
-var URL string = "http://localhost:8080"
+var URL string = "http://localhost:49160"
 
 // Task Struct
 type Task struct {

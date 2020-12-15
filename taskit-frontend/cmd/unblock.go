@@ -27,11 +27,15 @@ var unblockCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		taskList := getAllTasks(-1, "", "")
 		if !verifyIfTaskExists(args[0], taskList) {
-			fmt.Println("Task not found!")
+			fmt.Println(`
+			Task not found!
+			`)
 			os.Exit(0)
 		}
 		if !verifyIsTaskIsBlocked(args[0]) {
-			fmt.Println("Task must be blocked to be unblocked!")
+			fmt.Println(`
+			Task must be blocked to be unblocked!
+			`)
 			os.Exit(0)
 		}
 
@@ -65,7 +69,9 @@ func unblockTask(taskID string) {
 
 	defer resp.Body.Close()
 
-	fmt.Println("Task unblocked successfully!")
+	fmt.Println(`
+	Task unblocked successfully!
+	`)
 
 }
 

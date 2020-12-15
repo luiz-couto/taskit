@@ -41,7 +41,9 @@ var blockCmd = &cobra.Command{
 			os.Exit(0)
 		}
 		if !verifyIsTaskIsValid(args[0]) {
-			fmt.Println("Task must be with status ToDo or Working to be blocked!")
+			fmt.Println(`
+			Task must be with status ToDo or Working to be blocked!. 
+			`)
 			os.Exit(0)
 		}
 
@@ -53,12 +55,16 @@ var blockCmd = &cobra.Command{
 					for {
 						otherTaskID := readOtherTaskID()
 						if !verifyIfTaskExists(otherTaskID, taskList) {
-							fmt.Println("Task not found!")
+							fmt.Println(`
+							Task not found!
+							`)
 							break
 						}
 
 						if !verifyIsTaskIsValid(otherTaskID) {
-							fmt.Println("Task must be with status ToDo or Working to block other tasks!")
+							fmt.Println(`
+							Task must be with status ToDo or Working to block other tasks!
+							`)
 							os.Exit(0)
 						}
 

@@ -28,6 +28,8 @@ var setCmd = &cobra.Command{
 		- description
 		- status
 		- priority
+		- deadline
+		- timeEstimate
 `,
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 3 {
@@ -56,28 +58,38 @@ func updateTaskValue(id, property, value string) {
 	task := getTaskByID(id)
 
 	if property != "title" && property != "description" && property != "status" && property != "priority" && property != "deadline" && property != "timeEstimate" {
-		fmt.Println("property of task should be one of: title / description / status / priority / deadline / timeEstimate")
+		fmt.Println(`
+		property of task should be one of: title / description / status / priority / deadline / timeEstimate
+		`)
 		os.Exit(0)
 	}
 
 	if property == "status" && value != "ToDo" && value != "Working" && value != "Done" {
-		fmt.Println("status should be one of: ToDo or Working or Done")
+		fmt.Println(`
+		status should be one of: ToDo or Working or Done
+		`)
 		os.Exit(0)
 	}
 
 	if property == "priority" {
 		if _, err := strconv.Atoi(value); err != nil {
-			fmt.Println("priority should be a integer!")
+			fmt.Println(`
+			priority should be a integer!
+			`)
 			os.Exit(0)
 		} else if v, _ := strconv.Atoi(value); v < 0 {
-			fmt.Println("priority should be positive or zero!")
+			fmt.Println(`
+			priority should be positive or zero!
+			`)
 			os.Exit(0)
 		}
 	}
 
 	if property == "status" && value == "Done" {
 		if task.Blocked != -1 {
-			fmt.Println("Blocked tasks cant be passed to Done!")
+			fmt.Println(`
+			Blocked tasks cant be passed to Done!
+			`)
 			os.Exit(0)
 		}
 	}
@@ -85,8 +97,10 @@ func updateTaskValue(id, property, value string) {
 	if property == "deadline" {
 		if value != "no-deadline" {
 			if !verifyIfDateIsValid(value) {
-				fmt.Println("Date is not valid! Valid date is in format YYYY-MM-DD")
-				fmt.Println(`If you want to remove a deadline, just set it equal to "no-deadline"`)
+				fmt.Println(`
+				Date is not valid! Valid date is in format YYYY-MM-DD.
+				If you want to remove a deadline, just set it equal to "no-deadline"
+				`)
 				os.Exit(0)
 			}
 		} else {
@@ -104,8 +118,10 @@ func updateTaskValue(id, property, value string) {
 	if property == "timeEstimate" {
 		if value != "no-time-estimate" {
 			if !verifyIfFloatIsValid(value) {
-				fmt.Println("Number not valid! Time estimate must be in hours, Ex. 1, 1.5, 2, 2.2")
-				fmt.Println(`If you want to remove a time-estimate, just set it equal to "no-time-estimate"`)
+				fmt.Println(`
+				Number not valid! Time estimate must be in hours, Ex. 1, 1.5, 2, 2.2.
+				If you want to remove a time-estimate, just set it equal to "no-time-estimate"
+				`)
 				os.Exit(0)
 			}
 		} else {
@@ -154,7 +170,9 @@ func updateTaskValue(id, property, value string) {
 		setWorkingEnter(id)
 	}
 
-	fmt.Println("Task updated successfully!")
+	fmt.Println(`
+	Task updated successfully!
+	`)
 
 }
 

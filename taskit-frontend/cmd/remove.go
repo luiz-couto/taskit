@@ -86,7 +86,9 @@ func getTaskByID(taskID string) Task {
 	}
 
 	if len(tasksArray) == 0 {
-		fmt.Println("Task not found!")
+		fmt.Println(`
+		Task not found!
+		`)
 		os.Exit(0)
 	}
 

@@ -214,6 +214,8 @@ func endTaskCreation(title string, description string, status string, priority s
 
 	defer resp.Body.Close()
 
-	fmt.Println("Task created successfully!")
+	fmt.Println(`
+	Task created successfully!
+	`)
 
 }

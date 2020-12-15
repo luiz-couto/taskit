@@ -42,14 +42,18 @@ var timeCmd = &cobra.Command{
 			totalDuration, _ := time.ParseDuration(totalAsString + "s")
 
 			out := time.Time{}.Add(totalDuration)
-			fmt.Println("Time working in this task:", out.Format("15h 04m 05s"))
+			fmt.Println(`
+			Time working in this task:`, out.Format("15h 04m 05s"))
+			fmt.Printf("\n")
 		} else {
 
 			elapsed, _ := strconv.ParseFloat(task.WorkingElapsed, 64)
 			totalAsString := fmt.Sprintf("%f", elapsed)
 			totalDuration, _ := time.ParseDuration(totalAsString + "s")
 			out := time.Time{}.Add(totalDuration)
-			fmt.Println("Time working in this task:", out.Format("15h 04m 05s"))
+			fmt.Println(`
+			Time working in this task:`, out.Format("15h 04m 05s"))
+			fmt.Printf("\n")
 		}
 
 	},

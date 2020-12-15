@@ -25,7 +25,9 @@ build in a CLI program!
 	`,
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello! This is Taskit, a task manager build in CLI. For more options and help use --help flag ;)")
+		fmt.Println(`
+		Hello! This is Taskit, a task manager build in CLI. For more options and help use --help flag ;)
+		`)
 	},
 }
 
