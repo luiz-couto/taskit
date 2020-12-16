@@ -11,7 +11,7 @@ First, clone this repository. Inside the backend folder (taskit-webserver), you 
 the local server. Pretty easy, just run it with 
 
 ```
-./runWebserver
+./runWebserver.sh
 ```
 
 which will be built as a docker container when you install. So, the only thing you need
@@ -19,7 +19,7 @@ to have in your machine to run the taskit webserver is docker! For the frontend,
 installation. Just run the installFrontend script using
 
 ```
-./installFrontend
+./installFrontend.sh
 ```
 
 inside the taskit-frontend folder. After running the command, you can restart the pc
